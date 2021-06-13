@@ -1,0 +1,87 @@
+body{
+    display: flex;
+    justify-content: center;
+    background: #808080;
+    margin:0;
+    color:white;
+    counter-reset: names;
+    font-family: 'Montserrat', sans-serif;
+}
+#root{
+    background-color: black;
+    height: 100vh;
+    width:clamp(0px,100%,500px);
+}
+
+#title{
+    font-family: "Open Sans","sans serrif";
+    text-align: center;
+    font-size:clamp(0px,30vw,120px);
+    padding-bottom:clamp(0px,50vh,150px);
+}
+#inputField{
+    padding-top: 0vh;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#inputField input{
+    background-color: black;
+    width:75%;
+    border: none;
+    transition-duration: 1s;
+    border-bottom: green 5px solid;
+    height:8vh;
+}
+#inputField input:focus{
+   outline: none !important;
+}
+
+#inputField input:hover{
+    outline: none !important;
+    border-bottom: yellow 5px solid;
+    transition-duration: 1s;
+}
+
+#inputField input::placeholder{
+    text-align: center;
+    font-size: 100%;
+}
+
+#inputField *{
+    margin-top: 5vh;
+    color:white;
+    font-size: clamp(0px,5.5vh,40px);
+    text-align: center;
+}
+
+#inputField button{
+    background-color: yellow;
+    height:7vh;
+    width:75%;
+    font-size: 5.5vh;
+    border-radius: 0.25em;
+    color: black;
+}
+
+#inputField button:hover{
+    box-shadow: -10px 10px 15px 0px rgba(205, 214, 120, 0.4);
+    transform: translateY(-10%);
+    transition-duration: 0.5s;
+}
+
+#board{
+    width:100vw;
+    height: 100vww;
+}
+
+.hidden{
+    display: none !important;
+}
+
+#border{
+    stroke: 5px solid yellow;
+    height: 98vw;
+    width: 98vw;
+}
