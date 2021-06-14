@@ -73,6 +73,7 @@ body{
 
 #container{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
@@ -113,4 +114,7 @@ body{
     stroke-linecap: round;
     width: clamp(0px,99vw,450px);
     height: clamp(0px,99vw,450px);
+}
+#overlay{
+    position:absolute;
 }
