@@ -1,15 +1,25 @@
 class player{
-    constructor(name,turn,board){
+    constructor(name,socket){
         this.name=name;
-        this.turn=turn;
-        this.board=board;
+        this.socket=socket;
     }
-
-
+    joinedRoomCode={}
+    table=[]
+    uid=0
+    status="not ready"
 }
 
 
 
 class room{
-    
+    constructor(code){
+        this.code = code;
+    }
+    players=[]
+    addPlayers(player){
+        this.players.push(player)
+    }
+}
+
+module.exports ={room:room,player:player                    
 }
