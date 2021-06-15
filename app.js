@@ -125,4 +125,4 @@ function emitAll(selectedRoom,objective,message) {
 }
 
 
-server.listen(3000, console.log("listening"));
+server.listen(process.env.PORT || 3000, console.log("listening"));
