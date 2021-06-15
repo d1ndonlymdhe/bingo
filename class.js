@@ -38,5 +38,4 @@ function findPlayer(uid,room){
   }
   
 
-module.exports ={room:room,player:player                    
-}
+module.exports ={room:room,player:player}

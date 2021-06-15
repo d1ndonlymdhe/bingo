@@ -1,9 +1,15 @@
+//const { room } = require("../class");
+
 const socket = io();
 var roomCode;
 var allPlayers = [];
 var uid= 0;
+var isHost= false;
+var gameStarted= false;
+var isDone = false;
 document.getElementById("create").addEventListener("click", () => {
   let playerName = document.querySelectorAll("input")[0];
+  isHost=true;
   playerName = playerName.value;
   if (playerName != "" && playerName != undefined) {
     socket.emit("create", playerName);
@@ -22,13 +28,16 @@ socket.on("roomCode", (code,id) => {
 });
 
 document.getElementById("done").addEventListener("click", () => {
-    console.log(roomCode)
+    //console.log(roomCode)
+  isDone=true;
   socket.emit("done", input, roomCode ,uid);
+  
 
 });
 socket.on("updatePlayers", (players) => {
   //console.log(players);
   allPlayers = players;
+  let allReady = true;
   document.getElementById("connectedPlayers").innerHTML = "";
   players.forEach((p) => {
     let text = document.createTextNode(`${p[0]}/${p[1]}`);
@@ -36,10 +45,18 @@ socket.on("updatePlayers", (players) => {
     para.appendChild(text);
     document.getElementById("connectedPlayers").appendChild(para);
     document.getElementById("connectedPlayers").classList.remove("hidden");
+    if(p[1]=="not ready"){
+      allReady=false;
+    }
+
   });
+  if(allReady && isHost){
+    document.getElementById("startButton").classList.remove("hidden")
+  }
 });
 
 document.getElementById("join").addEventListener("click", () => {
+  isHost=false;
   let playerName = document.querySelectorAll("input")[0];
   playerName = playerName.value;
   let Code = document.querySelectorAll("input")[1];
@@ -62,3 +79,11 @@ socket.on("joined", (code,id) => {
   document.getElementById("first").classList.toggle("hidden");
   document.getElementById("codeContainer").innerHTML = `<p>${code}</p>`;
 });
+
+socket.on("started",(m)=>{
+  gameStarted=true;
+})
+
+document.getElementById("startButton").addEventListener('click',()=>{
+  socket.emit("start",roomCode)
+})

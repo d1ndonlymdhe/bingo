@@ -12,7 +12,12 @@ for(let i = 0;i<25;i++){
 //adding eventListeners to the clickers mentioned above.
 clickers.forEach(el=>{
     el.addEventListener('click',e=>{
+        if(!isDone&&!gameStarted){
         handle(el,e)
+        }
+        if(gameStarted&&isDone){
+            differentHandle(el,e)
+        }
     })
 })
 
@@ -67,6 +72,11 @@ function handle(el,e){
            
        }
     }
+}
+
+
+function differentHandle(el,e){
+    
 }
 
 

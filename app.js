@@ -24,7 +24,12 @@ io.on("connection", (socket) => {
   socket.on("done", (input,code,uid) => {
     let selectedRoom = findRoom(code);
     selectedRoom.updatePlayerStatus(uid,"ready",input)
-    emitPlayerStatus(selectedRoom)
+    //emitPlayerStatus(selectedRoom)
+    let allPlayers = [];
+  selectedRoom.players.forEach((p) => {
+    allPlayers.push([p.name, p.status]);
+  });
+    emitAll(selectedRoom,"updatePlayers",allPlayers)
   });
 
 
@@ -54,6 +59,8 @@ io.on("connection", (socket) => {
     socket.emit("roomCode", rand, currentPlayer.uid);
     tempRoom.players.forEach((p) => {});
   });
+
+
   socket.on("join", (playerName, code) => {
     let arr = rooms.map((e) => {
       return e.code;
@@ -71,10 +78,23 @@ io.on("connection", (socket) => {
       let selectedRoom = findRoom(code);
       selectedRoom.players.push(currentPlayer);
       socket.emit("joined", selectedRoom.code ,currentPlayer.uid);
-      emitPlayerStatus(selectedRoom);
+      let allPlayers = [];
+  selectedRoom.players.forEach((p) => {
+    allPlayers.push([p.name, p.status]);
+  });
+      emitAll(selectedRoom,"updatePlayers",allPlayers);
+    
     }
   });
+
+  socket.on("start",code=>{
+    let selectedRoom = findRoom(code);
+    emitAll(selectedRoom,"started",true)
+  })
+
 });
+
+
 
 function findRoom(code) {
   let temp;
@@ -97,13 +117,10 @@ function belongsTo(e, arr) {
   return false;
 }
 
-function emitPlayerStatus(selectedRoom) {
-  let allPlayers = [];
+function emitAll(selectedRoom,objective,message) {
+  
   selectedRoom.players.forEach((p) => {
-    allPlayers.push([p.name, p.status]);
-  });
-  selectedRoom.players.forEach((p) => {
-    p.socket.emit("updatePlayers", allPlayers);
+    p.socket.emit(objective, message);
   });
 }
 
