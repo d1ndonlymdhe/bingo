@@ -1,9 +1,9 @@
-<html lang="en">
+<html lang="en" crossorigin="anonymous">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="public/style.css">
     <!--fonts-->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="root">
-    <div id="first" class="hidden">
+    <div id="first" class="">
         <div id="title">BINGO</div>
         <div id="inputField">
             <input id="name" name="name" placeholder="Name">
@@ -23,12 +23,20 @@
             <button id="create">CREATE</button>
         </div>
     </div>
-    <div id="second">
+    <div id="second" class="hidden">
         <div id="overlay">
-        <button id="randomize">RANDOM</button>
-        <button id="done" class="hidden">Done</button>
-        <button id="reset">Reset</button>
-        </div>
+            <div id="buttons">
+                <button id="randomize">RANDOM</button>
+                <button id="done" class="hidden">Done</button>
+                <button id="reset">Reset</button>
+            </div>
+            <div id="waiting">
+                <p>waiting for players</p>
+                <div id="connectedPlayers" class="hidden">
+
+                </div>
+            </div>
+            <div id="codeContainer">0000</div>
         <div id="container">
             
             <div id="clickers">
@@ -79,6 +87,11 @@
         </div>
     </div>
 </div>
-<script src="logic.js"></script>
+<!-- <script src="socket.io/socket.io.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>  -->
+<script src="/socket.io/socket.io.js"></script> 
+<script src="public/logic.js"></script>
+<script src="public/connect.js" defer></script>
+<!-- <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script> -->
 </body>
 </html>

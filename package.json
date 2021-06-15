@@ -1,0 +1,23 @@
+{
+  "name": "bingo",
+  "version": "1.0.0",
+  "description": "ok",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": " node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d1ndonlymdhe/bingo.git"
+  },
+  "author": "d1ndonlymdhe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d1ndonlymdhe/bingo/issues"
+  },
+  "homepage": "https://github.com/d1ndonlymdhe/bingo#readme",
+  "dependencies": {
+    "socket.io": "^4.1.2"
+  }
+}

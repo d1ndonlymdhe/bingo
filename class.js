@@ -16,10 +16,27 @@ class room{
         this.code = code;
     }
     players=[]
-    addPlayers(player){
-        this.players.push(player)
+    updatePlayerStatus(uid,status,table){
+        let selectedPlayer = findPlayer(uid,this)
+        this.players.forEach(p=>{
+            if(p==selectedPlayer){
+                p.status=status;
+                p.table=table;
+                return 0;
+            }
+        })
     }
 }
+
+function findPlayer(uid,room){
+    let players = room.players;
+    for(let i=0;i<players.length;i++){
+      if(players[i].uid==uid){
+        return players[i]
+      }
+    }
+  }
+  
 
 module.exports ={room:room,player:player                    
 }

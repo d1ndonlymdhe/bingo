@@ -1,16 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 var current = 1; //stores the value which is to be added to the cell the player clicks
 var replaceFrom="";//required to handle swaps(player clicks on a pre-occupoid cell)
 var clickers= document.querySelectorAll("#clickers div");//stores the divs which overlay the board and determine which cell was selected
