@@ -7,12 +7,14 @@ var uid= 0;
 var isHost= false;
 var gameStarted= false;
 var isDone = false;
+var turn =0;
 document.getElementById("create").addEventListener("click", () => {
   let playerName = document.querySelectorAll("input")[0];
   isHost=true;
   playerName = playerName.value;
   if (playerName != "" && playerName != undefined) {
     socket.emit("create", playerName);
+    turn = 1;
   }
 });
 
@@ -72,9 +74,10 @@ document.getElementById("join").addEventListener("click", () => {
   }
 });
 
-socket.on("joined", (code,id) => {
+socket.on("joined", (code,id,t) => {
   //console.log("hello")
   uid = id;
+  turn = t
   document.getElementById("second").classList.toggle("hidden");
   document.getElementById("first").classList.toggle("hidden");
   document.getElementById("codeContainer").innerHTML = `<p>${code}</p>`;

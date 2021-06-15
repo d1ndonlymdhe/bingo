@@ -15,6 +15,7 @@ class room{
     constructor(code){
         this.code = code;
     }
+    turn = 1;
     players=[]
     updatePlayerStatus(uid,status,table){
         let selectedPlayer = findPlayer(uid,this)

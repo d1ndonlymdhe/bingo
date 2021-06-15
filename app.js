@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
       players.push(currentPlayer);
       let selectedRoom = findRoom(code);
       selectedRoom.players.push(currentPlayer);
-      socket.emit("joined", selectedRoom.code ,currentPlayer.uid);
+      socket.emit("joined", selectedRoom.code ,currentPlayer.uid,(selectedRoom.players.length));
       let allPlayers = [];
   selectedRoom.players.forEach((p) => {
     allPlayers.push([p.name, p.status]);
@@ -90,6 +90,23 @@ io.on("connection", (socket) => {
   socket.on("start",code=>{
     let selectedRoom = findRoom(code);
     emitAll(selectedRoom,"started",true)
+  })
+
+  socket.on("checkTurn",(turn,code,id)=>{
+    let selectedRoom = findRoom(code);
+    console.log(selectedRoom.turn)
+    console.log("huna parne ta",selectedRoom.turn)
+    if(selectedRoom.turn == turn){
+      socket.emit("checked",true,id)
+      if(selectedRoom.turn!=(selectedRoom.players.length)){
+        selectedRoom.turn+=1;
+        console.log(selectedRoom.turn)
+      }else{
+        selectedRoom.turn=1;
+      }
+    }else{
+      socket.emit("checked",false,selectedRoom.turn)
+    }
   })
 
 });

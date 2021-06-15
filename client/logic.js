@@ -75,10 +75,20 @@ function handle(el,e){
 }
 
 
-function differentHandle(el,e){
-    
+function differentHandle(el,e)
+{
+    console.log("ok")
+    socket.emit("checkTurn",turn,roomCode,el.id)
 }
-
+// console.log(socket)
+socket.on("checked",(ok,id)=>{
+    console.log("mega ok")
+    if(ok){
+       document.getElementById(id).style.backgroundColor="green"
+    }else{
+        console.log(id)
+    }
+})
 
 //when the random button is cliked an array with numbers 1-25 is randomized and the board is populated
 var random= document.getElementById("randomize")
