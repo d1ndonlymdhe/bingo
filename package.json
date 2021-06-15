@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/d1ndonlymdhe/bingo#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "socket.io": "^4.1.2"
   }
 }
