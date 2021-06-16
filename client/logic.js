@@ -78,15 +78,22 @@ function handle(el,e){
 function differentHandle(el,e)
 {
     console.log("ok")
-    socket.emit("checkTurn",turn,roomCode,el.id)
+    val = el.children[0].innerText
+    console.log(val)
+    socket.emit("checkTurn",turn,roomCode,val)
 }
 // console.log(socket)
-socket.on("checked",(ok,id)=>{
-    console.log("mega ok")
+socket.on("checked",(arr)=>{
+    val = arr[0];
+    ok=arr[1]
+   console.log("mega ok")
     if(ok){
-       document.getElementById(id).style.backgroundColor="green"
+        console.log(val)
+        console.log(findIdFromVal(val))
+        
+        document.getElementById(findIdFromVal(val)).style.backgroundColor="green"
     }else{
-        console.log(id)
+        console.log(val)
     }
 })
 
@@ -124,5 +131,13 @@ function showDone(){
     document.getElementById("done").classList.remove('hidden')
 }
 
+function findIdFromVal(val){
+    let ps = document.querySelectorAll("#clickers div p");
+    for(let i=0;i<ps.length;i++){
+        if(ps[i].innerText==val){
+            return i+1;
+        }
+    }
+}
 
 

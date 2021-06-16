@@ -92,12 +92,13 @@ io.on("connection", (socket) => {
     emitAll(selectedRoom,"started",true)
   })
 
-  socket.on("checkTurn",(turn,code,id)=>{
+  socket.on("checkTurn",(turn,code,val)=>{
     let selectedRoom = findRoom(code);
     console.log(selectedRoom.turn)
     console.log("huna parne ta",selectedRoom.turn)
     if(selectedRoom.turn == turn){
-      socket.emit("checked",true,id)
+      //socket.emit("checked",true,id)
+      emitAll(selectedRoom,"checked",[val,true])//object banauna jhau lagyo
       if(selectedRoom.turn!=(selectedRoom.players.length)){
         selectedRoom.turn+=1;
         console.log(selectedRoom.turn)

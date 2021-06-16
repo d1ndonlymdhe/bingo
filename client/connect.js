@@ -84,6 +84,8 @@ socket.on("joined", (code,id,t) => {
 });
 
 socket.on("started",(m)=>{
+  console.log("dui choti kina?")
+
   gameStarted=true;
 })
 
