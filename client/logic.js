@@ -125,10 +125,10 @@ socket.on("checkBack",arr=>{
     }else if(progress == 3){
         progressDiv.innerText = "B I N"
     }else if(progress == 4){
-        progressDiv.innerText == "B I N G"
+        progressDiv.innerText = "B I N G"
     }else if(progress >=5){
-        progressDiv.innerText == "B I N G O"
-        showBingo()
+        progressDiv.innerText = "B I N G O"
+        //showBingo()
         socket.emit("won",turn,roomCode)
     }
 })
