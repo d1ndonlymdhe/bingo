@@ -127,7 +127,7 @@ socket.on("checkBack",arr=>{
     }else if(progress == 4){
         progressDiv.innerText == "B I N G"
     }else if(progress >=5){
-        progressDiv == "B I N G O"
+        progressDiv.innerText == "B I N G O"
         socket.emit("won",turn,roomCode)
     }
 })
