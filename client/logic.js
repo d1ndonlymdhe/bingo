@@ -128,6 +128,7 @@ socket.on("checkBack",arr=>{
         progressDiv.innerText == "B I N G"
     }else if(progress >=5){
         progressDiv.innerText == "B I N G O"
+        showBingo()
         socket.emit("won",turn,roomCode)
     }
 })
@@ -148,7 +149,7 @@ random.addEventListener('click',e=>{
     //console.log(arr)
     init(arr);
     input = arr
-    showDone()  
+    //showDone()  
 })
 //shuffles any given array
 function shuffleArray(array) {
