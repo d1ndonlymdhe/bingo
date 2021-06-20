@@ -20,7 +20,12 @@ var rooms = [];
 io.on("connection", (socket) => {
   console.log("connected");
   
-  
+  // socket.on("disconnect",()=>{
+  //   rooms.forEach(room=>{
+  //     room.players.forEach()
+  //   })
+    
+  // })
   socket.on("done", (input,code,uid) => {
     let selectedRoom = findRoom(code);
     selectedRoom.updatePlayerStatus(uid,"ready",input)
@@ -29,7 +34,7 @@ io.on("connection", (socket) => {
   selectedRoom.players.forEach((p) => {
     allPlayers.push([p.name, p.status]);
   });
-    emitAll(selectedRoom,"updatePlayers",allPlayers)
+    selectedRoom.emitAll("updatePlayers",allPlayers)
   });
 
 
@@ -82,23 +87,24 @@ io.on("connection", (socket) => {
   selectedRoom.players.forEach((p) => {
     allPlayers.push([p.name, p.status]);
   });
-      emitAll(selectedRoom,"updatePlayers",allPlayers);
+      selectedRoom.emitAll("updatePlayers",allPlayers);
     
     }
   });
 
   socket.on("start",code=>{
     let selectedRoom = findRoom(code);
-    emitAll(selectedRoom,"started",true)
+    selectedRoom.emitAll("started",true)
   })
 
   socket.on("checkTurn",(turn,code,val)=>{
     let selectedRoom = findRoom(code);
     console.log(selectedRoom.turn)
-    console.log("huna parne ta",selectedRoom.turn)
+    //console.log("huna parne ta",selectedRoom.turn)
     if(selectedRoom.turn == turn){
       //socket.emit("checked",true,id)
-      emitAll(selectedRoom,"checked",[val,true])//object banauna jhau lagyo
+      selectedRoom.emitAll("checked",[val,true])//object banauna jhau lagyo
+      selectedRoom.emitAll("checkBack",[val])
       if(selectedRoom.turn!=(selectedRoom.players.length)){
         selectedRoom.turn+=1;
         console.log(selectedRoom.turn)
@@ -108,6 +114,11 @@ io.on("connection", (socket) => {
     }else{
       socket.emit("checked",false,selectedRoom.turn)
     }
+  })
+
+  socket.on("won",(turn,code)=>{
+    let selectedRoom = findRoom(code);
+    selectedRoom.emitAll("over",selectedRoom.players[turn-1].name)
   })
 
 });
@@ -135,12 +146,12 @@ function belongsTo(e, arr) {
   return false;
 }
 
-function emitAll(selectedRoom,objective,message) {
+// function emitAll(selectedRoom,objective,message) {
   
-  selectedRoom.players.forEach((p) => {
-    p.socket.emit(objective, message);
-  });
-}
+//   selectedRoom.players.forEach((p) => {
+//     p.socket.emit(objective, message);
+//   });
+// }
 
 
 server.listen(process.env.PORT || 3000, console.log("listening"));

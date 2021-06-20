@@ -1,9 +1,20 @@
+// const { room } = require("../class");
 
 var current = 1; //stores the value which is to be added to the cell the player clicks
 var replaceFrom="";//required to handle swaps(player clicks on a pre-occupoid cell)
 var clickers= document.querySelectorAll("#clickers div");//stores the divs which overlay the board and determine which cell was selected
 var input=[]//stores the data to be sent to the server
-
+var state=[]//stores status;
+var arr=[]
+var cols=[]
+var diag=[]
+var progress = 0;
+var doneR= [];
+var doneC= [];
+var doneD =[];
+for (let i=0;i<25;i++){
+    state.push(0)
+}
 //initializes the input array with zeros
 for(let i = 0;i<25;i++){
     input.push(0);
@@ -86,15 +97,44 @@ function differentHandle(el,e)
 socket.on("checked",(arr)=>{
     val = arr[0];
     ok=arr[1]
-   console.log("mega ok")
+   //console.log("mega ok")
     if(ok){
-        console.log(val)
-        console.log(findIdFromVal(val))
+        //console.log(val)
+        //console.log(findIdFromVal(val))
         
         document.getElementById(findIdFromVal(val)).style.backgroundColor="green"
+
     }else{
         console.log(val)
     }
+})
+
+socket.on("checkBack",arr=>{
+    val=arr[0];
+    id = findIdFromVal(val);
+    state[id-1]=val;
+    assignRows(state)
+    assignCols(state)
+    assignDiags(state)
+    check()
+    let progressDiv = document.getElementById("progress");
+    if(progress==1){
+        progressDiv.innerText="B"
+    }else if(progress == 2){
+        progressDiv.innerText="B I"
+    }else if(progress == 3){
+        progressDiv.innerText = "B I N"
+    }else if(progress == 4){
+        progressDiv.innerText == "B I N G"
+    }else if(progress >=5){
+        progressDiv == "B I N G O"
+        socket.emit("won",turn,roomCode)
+    }
+})
+
+socket.on("over",name=>{
+    document.getElementById("won").classList.remove("hidden");
+    document.getElementById("won").innerText = name;
 })
 
 //when the random button is cliked an array with numbers 1-25 is randomized and the board is populated
@@ -108,7 +148,7 @@ random.addEventListener('click',e=>{
     //console.log(arr)
     init(arr);
     input = arr
-    showDone()
+    showDone()  
 })
 //shuffles any given array
 function shuffleArray(array) {
@@ -141,3 +181,88 @@ function findIdFromVal(val){
 }
 
 
+function check(){
+    for(let i=0;i<5;i++){
+        console.log(!(belongsTo(0,rows[i])),"rows",!belongsTo(i,doneR))
+        if(!belongsTo(0,rows[i])&&!belongsTo(i,doneR)){
+            progress++;
+            doneR.push(i);
+            console.log(doneR)
+        }
+    }
+    for(let i=0;i<5;i++){
+        console.log(!(belongsTo(0,cols[i])),"cols",!belongsTo(i,doneC))
+
+       if(!belongsTo(0,cols[i])&&!belongsTo(i,doneC)){
+          progress++;
+          doneC.push(i)
+          console.log(doneC)
+       }
+   }
+   for(let i=0;i<2;i++){
+    console.log(!(belongsTo(0,diag[i])),"disgs",!belongsTo(i,doneD))
+
+       if(!belongsTo(0,diag[i])&&!belongsTo(i,doneD)){
+           progress++;
+           doneD.push(i)
+           console.log(doneD)
+
+        }
+   }
+   console.log(progress)
+}
+
+function assignRows(state){
+    let arr=[];
+    let arr2=[];
+    let a=0
+   //console.log(state)
+    for(let i=0;i<5;i++){
+        for(let j=i;j<i+5;j++){
+            arr.push(state[a]);
+            a++
+        }
+        //console.log(arr)
+        arr2.push(arr);
+        arr=[]
+    }
+    rows=arr2;
+}
+
+function assignCols(state){
+    let arr=[];
+    let arr2=[];
+    for(let i=0;i<5;i++){
+        for(let j=i;j<25;j+=5){
+            arr.push(state[j])
+        }
+        arr2.push(arr);
+        arr=[]
+    }
+    cols=arr2;
+}
+function assignDiags(state){
+    let arr=[];
+    let arr2=[];
+    for(let i=0;i<25;i+=6){
+        arr.push(state[i])
+    }
+    arr2.push(arr)
+    arr=[]
+    for(let i=4;i<21;i+=4){
+        arr.push(state[i])
+    }
+    arr2.push(arr)
+    arr=[]
+    diag=arr2;
+}
+
+function belongsTo(e, arr) {
+    //console.log(arr);
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] == e) {
+        return true;
+      }
+    }
+    return false;
+  }
