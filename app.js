@@ -116,7 +116,12 @@ io.on("connection", (socket) => {
     }
   })
 
-  socket.on("won",(turn,code)=>{
+  // socket.on("won",(turn,code)=>{
+  //   let selectedRoom = findRoom(code);
+  //   selectedRoom.emitAll("over",selectedRoom.players[turn-1].name)
+  // })
+
+  socket.on("bingo",(turn,code)=>{
     let selectedRoom = findRoom(code);
     selectedRoom.emitAll("over",selectedRoom.players[turn-1].name)
   })

@@ -128,8 +128,8 @@ socket.on("checkBack",arr=>{
         progressDiv.innerText = "B I N G"
     }else if(progress >=5){
         progressDiv.innerText = "B I N G O"
-        //showBingo()
-        socket.emit("won",turn,roomCode)
+        showBingo()
+        //socket.emit("won",turn,roomCode)
     }
 })
 
@@ -149,8 +149,13 @@ random.addEventListener('click',e=>{
     //console.log(arr)
     init(arr);
     input = arr
-    //showDone()  
+    showDone()  
 })
+
+document.getElementById("bingo").addEventListener("click",()=>{
+    socket.emit("bingo",turn,roomCode)
+})
+
 //shuffles any given array
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -267,3 +272,8 @@ function belongsTo(e, arr) {
     }
     return false;
   }
+
+
+function showBingo(){
+    document.getElementById("bingo").classList.remove("hidden")
+}
