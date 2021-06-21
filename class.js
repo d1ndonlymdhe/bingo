@@ -15,62 +15,7 @@ class player{
             }
         }
     }
-    assignRows(){
-        let arr=[];
-        let arr2=[];
-        for(let i=0;i<5;i++){
-            for(let j=0;j<5;j++){
-                arr.push(this.state[j]);
-            }
-            arr2.push(arr);
-            arr=[]
-        }
-        this.rows=arr2;
-    }
-    
-    assignCols(){
-        let arr=[];
-        let arr2=[];
-        for(let i=0;i<5;i++){
-            for(let j=i;j<i+19;j+=5){
-                arr.push(this.state[j])
-            }
-            arr2.push(arr);
-            arr=[]
-        }
-        this.cols=arr2;
-    }
-    assignDiags(){
-        for(let i=0;i<25;i+=6){
-            arr.push(this.state[i])
-        }
-        arr2.push(arr)
-        arr=[]
-        for(let i=4;i<21;i+=4){
-            arr.push(this.state[i])
-        }
-        arr2.push(arr)
-        arr=[]
-        this.diag=arr2
-    }
-    progress=0;
-    check(){
-         for(let i=0;i<5;i++){
-             if(!belongsTo(0,this.arr[i])){
-                progress++;
-             }
-         }
-         for(let i=0;i<5;i++){
-            if(!belongsTo(0,this.cols[i])){
-               progress++;
-            }
-        }
-        for(let i=0;i<2;i++){
-            if(!belongsTo(0,this.diag[i])){
-                progress++;
-            }
-        }
-    }
+    isTurn=false;
     joinedRoomCode={}
     table=[]
     uid=0
