@@ -98,7 +98,7 @@ button {
 }
 
 #board line {
-  stroke: yellow;
+  stroke: #3eb595;
   stroke-width: 5px;
 }
 
@@ -111,6 +111,7 @@ button {
   grid-template-columns: 20% 20% 20% 20% 20%;
   grid-template-rows: 20% 20% 20% 20% 20%;
   text-align: center;
+  color:yellow;
 }
 
 #clickers div p {
@@ -160,15 +161,17 @@ button {
   display: inline;
 }
 #connectedPlayers {
-  /* display:flex; */
-  width: 100%;
-  display: grid;
-  grid-template-columns: auto auto auto auto;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-evenly;
+ align-content:space-between;
+ flex-wrap: wrap;
 }
 
 .playerName{
   width:100%;
   height:100%;
+  margin:3vw;
 }
 
 .playerName svg{
@@ -185,6 +188,10 @@ button {
 
 .playerName *{
   display: inline-block;
+}
+
+.playerName p{
+  margin:0;
 }
 
 /* .playerName{

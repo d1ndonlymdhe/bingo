@@ -65,6 +65,7 @@ socket.on("updatePlayers", (players) => {
         div.style.color=color
         //div.appendChild(playerStatus(color))
         document.getElementById("connectedPlayers").appendChild(div)
+        document.getElementById("connectedPlayers").style.fontSize="clamp(0px,5vh,100%)"
         document.getElementById("connectedPlayers").classList.remove("hidden");
 
 
