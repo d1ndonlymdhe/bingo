@@ -6,7 +6,9 @@ body {
   color: white;
   counter-reset: names;
   font-family: "Montserrat", sans-serif;
+  user-select: none;
 }
+
 #root {
   background-color: black;
   height: 100vh;
@@ -19,6 +21,7 @@ body {
   font-size: clamp(0px, 30vw, 120px);
   padding-bottom: clamp(0px, 50vh, 150px);
 }
+
 #inputField {
   padding-top: 0vh;
   display: flex;
@@ -34,6 +37,7 @@ body {
   border-bottom: green 5px solid;
   height: 8vh;
 }
+
 #inputField input:focus {
   outline: none !important;
 }
@@ -56,12 +60,16 @@ body {
   text-align: center;
 }
 
-#inputField button {
+button {
   background-color: yellow;
   height: 7vh;
   width: 75%;
   font-size: 5.5vh;
   border-radius: 0.25em;
+  color: black;
+}
+
+#inputField button {
   color: black;
 }
 
@@ -88,12 +96,14 @@ body {
 .hidden {
   display: none !important;
 }
+
 #board line {
   stroke: yellow;
   stroke-width: 5px;
 }
+
 #clickers {
-  z-index: 2;
+  z-index: 6;
   display: grid;
   position: absolute;
   width: clamp(0px, 99vw, 450px);
@@ -102,12 +112,14 @@ body {
   grid-template-rows: 20% 20% 20% 20% 20%;
   text-align: center;
 }
+
 #clickers div p {
   /* padding-top: 30%; */
   font-size: clamp(0px, 10vh, 50px);
   margin: 0;
   z-index: 1;
 }
+
 #border {
   stroke: yellow;
   stroke-width: 5px;
@@ -115,10 +127,71 @@ body {
   width: clamp(0px, 99vw, 450px);
   height: clamp(0px, 99vw, 450px);
 }
+
 #overlay {
   position: absolute;
+  width: clamp(0px, 100%, 500px);
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  align-content: center;
+  align-items: center;
+}
+
+
+#container1{
+  width: 100%;
+}
+#overlay button {
+  width: 45%;
+  margin: 2%;
+}
+.playerName{
+  display: inline;
 }
 #connectedPlayers {
+  /* display:flex; */
+  width: 100%;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto auto;
+}
+
+.playerName{
+  width:100%;
+  height:100%;
+}
+
+.playerName svg{
+  height:100%;
+  width:100%;
+}
+
+.playerName svg circle{
+  position: relative;
+  cx:50%;
+  cy:50%;
+  r:50%;
+}
+
+.playerName *{
+  display: inline-block;
+}
+
+/* .playerName{
+  display: flex;
+} */
+
+#waiting{
+  display: flex;
+
 }
