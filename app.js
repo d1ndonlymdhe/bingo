@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-//const { connect } = require('http2');
 const server = http.createServer(app);
 const {
     Server
@@ -22,16 +21,9 @@ var rooms = [];
 io.on("connection", (socket) => {
     console.log("connected");
 
-    // socket.on("disconnect",()=>{
-    //   rooms.forEach(room=>{
-    //     room.players.forEach()
-    //   })
-
-    // })
-    socket.on("done", (input, code, uid) => {
+    socket.on("done", (input, code, uid , status) => {
         let selectedRoom = findRoom(code);
-        selectedRoom.updatePlayerStatus(uid, "ready", input)
-        //emitPlayerStatus(selectedRoom)
+        selectedRoom.updatePlayerStatus(uid, status, input)
         let allPlayers = [];
         selectedRoom.players.forEach((p) => {
             allPlayers.push([p.name, p.status]);
@@ -41,11 +33,8 @@ io.on("connection", (socket) => {
 
 
 
-
     socket.on("create", (playerName) => {
         let currentPlayer = new player(playerName, socket);
-        // players.push(currentPlayer);
-
         let rand = 0;
         rand = Math.floor(Math.random() * 1000000);
         rand = rand.toString();
@@ -61,7 +50,6 @@ io.on("connection", (socket) => {
         }
         tempRoom = new room(rand);
         tempRoom.players.push(currentPlayer)
-        //tempRoom.addPlayers(currentPlayer);
         rooms.push(tempRoom);
         socket.emit("roomCode", rand, currentPlayer.uid);
         tempRoom.players.forEach((p) => {});
@@ -103,10 +91,8 @@ io.on("connection", (socket) => {
     socket.on("checkTurn", (turn, code, val) => {
         let selectedRoom = findRoom(code);
         console.log(selectedRoom.turn)
-        //console.log("huna parne ta",selectedRoom.turn)
         if (selectedRoom.turn == turn) {
-            //socket.emit("checked",true,id)
-            selectedRoom.emitAll("checked", [val, true]) //object banauna jhau lagyo
+            selectedRoom.emitAll("checked", [val, true])
             selectedRoom.emitAll("checkBack", [val])
             if (selectedRoom.turn != (selectedRoom.players.length)) {
                 selectedRoom.turn += 1;
@@ -119,11 +105,6 @@ io.on("connection", (socket) => {
             socket.emit("checked", false, selectedRoom.turn)
         }
     })
-
-    // socket.on("won",(turn,code)=>{
-    //   let selectedRoom = findRoom(code);
-    //   selectedRoom.emitAll("over",selectedRoom.players[turn-1].name)
-    // })
 
     socket.on("bingo", (turn, code) => {
         let selectedRoom = findRoom(code);
@@ -154,13 +135,6 @@ function belongsTo(e, arr) {
     }
     return false;
 }
-
-// function emitAll(selectedRoom,objective,message) {
-
-//   selectedRoom.players.forEach((p) => {
-//     p.socket.emit(objective, message);
-//   });
-// }
 
 
 server.listen(process.env.PORT || 3000, console.log("listening"));

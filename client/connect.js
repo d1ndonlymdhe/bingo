@@ -1,6 +1,3 @@
-//const e = require("express");
-
-//const { room } = require("../class");
 const socket = io();
 var roomCode;
 var allPlayers = [];
@@ -22,21 +19,18 @@ document.getElementById("create").addEventListener("click", () => {
 
 socket.on("roomCode", (code, id) => {
     uid = id;
-    //console.log(code,typeof code)
     document.getElementById("first").classList.add("hidden");
     document.getElementById("second").classList.remove("hidden");
     let container = document.getElementById("codeContainer");
-    //console.log(container)
     roomCode = code;
     container.innerHTML = `<p>${code}</p>`;
 });
 
 document.getElementById("done").addEventListener("click", () => {
-    //console.log(roomCode)
+if(!belongsTo(0,input)){
     isDone = true;
-    socket.emit("done", input, roomCode, uid);
-
-
+    socket.emit("done", input, roomCode, uid , "ready");
+}
 });
 socket.on("updatePlayers", (players) => {
     console.log(players);
@@ -46,25 +40,19 @@ socket.on("updatePlayers", (players) => {
     document.getElementById("connectedPlayers").innerHTML = "";
     document.querySelectorAll("#waiting p")[0].classList.add("hidden")
     players.forEach((p) => {
-        //console.log(p)
         let div = document.createElement("div");
         div.classList.add("playerName")
         let text = document.createTextNode(`${p[0]}`);
         let para = document.createElement("p");
         para.appendChild(text);
         console.log(color)
-        //document.getElementById("connectedPlayers").appendChild(para);
         if(p[1]=="ready"){
           color="green"
-            //console.log(color)
         }else{
             color="red";
-            //console.log(color)
         }
-        //document.getElementById("connectedPlayers").appendChild(createCircle(color))
         div.appendChild(para)
         div.style.color=color
-        //div.appendChild(playerStatus(color))
         document.getElementById("connectedPlayers").appendChild(div)
         document.getElementById("connectedPlayers").style.fontSize="clamp(0px,5vh,100%)"
         document.getElementById("connectedPlayers").classList.remove("hidden");
@@ -99,7 +87,6 @@ document.getElementById("join").addEventListener("click", () => {
 });
 
 socket.on("joined", (code, id, t) => {
-    //console.log("hello")
     uid = id;
     turn = t
     document.getElementById("second").classList.toggle("hidden");
@@ -108,18 +95,17 @@ socket.on("joined", (code, id, t) => {
 });
 
 socket.on("started", (m) => {
-    //console.log("dui choti kina?")
-    document.getElementsByClassName("playerName")[0].classList.add("turn");
+    document.getElementsByClassName("playerName")[0].children[0].classList.add("turn");
     prev = 0;
     gameStarted = true;
 })
 
 socket.on("turnUpdate",(turn)=>{
     let playerNames= document.getElementsByClassName("playerName")
-    playerNames[prev].classList.remove("turn");
-    playerNames[turn-1].classList.add("turn")   
+    console.table(prev,turn,playerNames[prev].children[0],playerNames[turn-1].children[0],playerNames)
+    playerNames[prev].children[0].classList.remove("turn")
+    playerNames[turn-1].children[0].classList.add("turn")   
     prev = turn-1
-
 })
 
 
@@ -127,25 +113,19 @@ document.getElementById("startButton").addEventListener('click', () => {
     socket.emit("start", roomCode)
 })
 
-function createCircle(color){
-  let svg = document.createElement("svg")
-  svg.setAttribute("xmlns","http://www.w3.org/2000/svg")
-//   svg.setAttribute("height","50px");
-//   svg.setAttribute("width","50px")
-  let circle = document.createElement("circle")
-  circle.setAttribute("cx","50%");
-  circle.setAttribute("cy","50%");
-  circle.setAttribute("r","50%");
-  circle.style.fill=color;
-  svg.appendChild(circle)
-  return svg;
+document.getElementById("reset").addEventListener('click',()=>{
+if(!gameStarted){
+    input = [];
+    for(let i=0;i<25;i++){
+        input.push[i]
+    }
+    isDone = false;
+    clickers.forEach((el)=>{
+        el.innerHTML=""
+        replaceFrom = ""
+        current = 1
+    })
+    socket.emit("done",input, roomCode ,uid ,"not ready")
 }
+})
 
-function playerStatus(color){
-    let status = document.createElement("span");
-    text = document.createTextNode("•");
-    status.style.fontSize = "5em"
-    status.style.color=color;
-    status.appendChild(text);
-    return status;
-}
