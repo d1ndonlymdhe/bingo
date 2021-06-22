@@ -80,7 +80,7 @@ socket.on("checked", (arr) => {
     if (ok) {
 
         document.getElementById(findIdFromVal(val)).style.border = "3px solid yellow"
-        document.getElementById(findIdFromVal(val)).style.borderRadius="0.5em"
+        document.getElementById(findIdFromVal(val)).style.borderRadius="100%"
 
     } else {
         console.log(val)
@@ -165,7 +165,8 @@ function check() {
         if (!belongsTo(0, rows[i]) && !belongsTo(i, doneR)) {
             progress++;
             doneR.push(i);
-            console.log(doneR)
+            document.querySelectorAll("#rows line")[i].classList.remove("hidden")
+            document.querySelectorAll("#rows line")[i].classList.add("animate")
         }
     }
     for (let i = 0; i < 5; i++) {
@@ -174,7 +175,8 @@ function check() {
         if (!belongsTo(0, cols[i]) && !belongsTo(i, doneC)) {
             progress++;
             doneC.push(i)
-            console.log(doneC)
+            document.querySelectorAll("#cols line")[i].classList.remove("hidden")
+            document.querySelectorAll("#cols line")[i].classList.add("animate")
         }
     }
     for (let i = 0; i < 2; i++) {
@@ -183,7 +185,8 @@ function check() {
         if (!belongsTo(0, diag[i]) && !belongsTo(i, doneD)) {
             progress++;
             doneD.push(i)
-            console.log(doneD)
+            document.querySelectorAll("#diag line")[i].classList.remove("hidden")
+            document.querySelectorAll("#diag line")[i].classList.add("animate")
 
         }
     }
