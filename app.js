@@ -89,6 +89,7 @@ io.on("connection", (socket) => {
             selectedRoom.players.forEach((p) => {
                 allPlayers.push([p.name, p.status]);
             });
+            console.log(selectedRoom.turn,allPlayers)
             selectedRoom.emitAll("updatePlayers", allPlayers);
 
         }
@@ -113,6 +114,7 @@ io.on("connection", (socket) => {
             } else {
                 selectedRoom.turn = 1;
             }
+            selectedRoom.emitAll("turnUpdate",selectedRoom.turn)
         } else {
             socket.emit("checked", false, selectedRoom.turn)
         }

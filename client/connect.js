@@ -9,6 +9,7 @@ var isHost = false;
 var gameStarted = false;
 var isDone = false;
 var turn = 0;
+var prev = 0;
 document.getElementById("create").addEventListener("click", () => {
     let playerName = document.querySelectorAll("input")[0];
     isHost = true;
@@ -38,14 +39,14 @@ document.getElementById("done").addEventListener("click", () => {
 
 });
 socket.on("updatePlayers", (players) => {
-    //console.log(players);
+    console.log(players);
     allPlayers = players;
     let allReady = true;
     let color;
     document.getElementById("connectedPlayers").innerHTML = "";
     document.querySelectorAll("#waiting p")[0].classList.add("hidden")
     players.forEach((p) => {
-        console.log(p)
+        //console.log(p)
         let div = document.createElement("div");
         div.classList.add("playerName")
         let text = document.createTextNode(`${p[0]}`);
@@ -55,10 +56,10 @@ socket.on("updatePlayers", (players) => {
         //document.getElementById("connectedPlayers").appendChild(para);
         if(p[1]=="ready"){
           color="green"
-            console.log(color)
+            //console.log(color)
         }else{
             color="red";
-            console.log(color)
+            //console.log(color)
         }
         //document.getElementById("connectedPlayers").appendChild(createCircle(color))
         div.appendChild(para)
@@ -107,10 +108,20 @@ socket.on("joined", (code, id, t) => {
 });
 
 socket.on("started", (m) => {
-    console.log("dui choti kina?")
-
+    //console.log("dui choti kina?")
+    document.getElementsByClassName("playerName")[0].classList.add("turn");
+    prev = 0;
     gameStarted = true;
 })
+
+socket.on("turnUpdate",(turn)=>{
+    let playerNames= document.getElementsByClassName("playerName")
+    playerNames[prev].classList.remove("turn");
+    playerNames[turn-1].classList.add("turn")   
+    prev = turn-1
+
+})
+
 
 document.getElementById("startButton").addEventListener('click', () => {
     socket.emit("start", roomCode)
