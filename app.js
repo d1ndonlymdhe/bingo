@@ -91,7 +91,8 @@ io.on("connection", (socket) => {
     socket.on("checkTurn", (turn, code, val) => {
         let selectedRoom = findRoom(code);
         console.log(selectedRoom.turn)
-        if (selectedRoom.turn == turn) {
+        if (selectedRoom.turn == turn && !belongsTo(val,selectedRoom.occupied)) {
+            selectedRoom.occupied.push(val)
             selectedRoom.emitAll("checked", [val, true])
             selectedRoom.emitAll("checkBack", [val])
             if (selectedRoom.turn != (selectedRoom.players.length)) {
