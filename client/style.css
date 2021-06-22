@@ -217,6 +217,13 @@ button {
 
 }
 
+
+#clickers div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #diag line{
   stroke-dasharray: 141.5%;
   stroke-dashoffset: 141.5%;

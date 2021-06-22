@@ -98,6 +98,11 @@ socket.on("started", (m) => {
     document.getElementsByClassName("playerName")[0].children[0].classList.add("turn");
     prev = 0;
     gameStarted = true;
+    let buttons=document.querySelectorAll("#buttons button")
+    buttons.forEach(el=>{
+        if(!belongsTo("hidden",el.classList))
+        el.classList.add("hidden")
+    })
 })
 
 socket.on("turnUpdate",(turn)=>{
