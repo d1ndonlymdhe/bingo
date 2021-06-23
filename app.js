@@ -111,6 +111,7 @@ io.on("connection", (socket) => {
         let selectedRoom = findRoom(code);
         if(!selectedRoom.finished){
         selectedRoom.emitAll("over", selectedRoom.players[turn - 1].name)
+        selectedRoom.finished = true;
         }
     })
 

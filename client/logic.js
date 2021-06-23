@@ -10,6 +10,7 @@ var progress = 0;
 var doneR = [];
 var doneC = [];
 var doneD = [];
+var gameFinished = false;
 for (let i = 0; i < 25; i++) {
     state.push(0)
 }
@@ -19,11 +20,14 @@ for (let i = 0; i < 25; i++) {
 
 clickers.forEach(el => {
     el.addEventListener('click', e => {
-        if (!isDone && !gameStarted) {
+        if (!isDone && !gameStarted && !gameFinished) {
             handle(el, e)
         }
-        if (gameStarted && isDone) {
+        if (gameStarted && isDone && !gameFinished) {
             differentHandle(el, e)
+        }else{
+            // do nothing [anonymous function le matrai chalyo tei bhayera remove listener garna milena]
+            return 0;
         }
     })
 })
@@ -113,6 +117,8 @@ socket.on("checkBack", arr => {
 socket.on("over", name => {
     document.getElementById("won").classList.remove("hidden");
     document.getElementById("won").innerText = name;
+    document.getElementById("bingo").classList.add("hidden")
+    gameFinished = true;
 })
 
 var random = document.getElementById("randomize")

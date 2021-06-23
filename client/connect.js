@@ -115,7 +115,9 @@ socket.on("turnUpdate",(turn)=>{
 
 
 document.getElementById("startButton").addEventListener('click', () => {
+if(document.querySelectorAll(".playerName").length >1){
     socket.emit("start", roomCode)
+}
 })
 
 document.getElementById("reset").addEventListener('click',()=>{
