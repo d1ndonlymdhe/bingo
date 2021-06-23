@@ -109,7 +109,9 @@ io.on("connection", (socket) => {
 
     socket.on("bingo", (turn, code) => {
         let selectedRoom = findRoom(code);
+        if(!selectedRoom.finished){
         selectedRoom.emitAll("over", selectedRoom.players[turn - 1].name)
+        }
     })
 
 });

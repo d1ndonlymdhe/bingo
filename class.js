@@ -31,6 +31,7 @@ class room{
     turn = 1;
     players=[]
     occupied=[]
+    finished=false;
     updatePlayerStatus(uid,status,table){
         let selectedPlayer = findPlayer(uid,this)
         this.players.forEach(p=>{

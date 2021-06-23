@@ -147,6 +147,10 @@ button {
   align-items: center;
 }
 
+#top{
+  width:100%;
+}
+
 #buttons {
   display: flex;
   flex-direction: row;
@@ -241,3 +245,4 @@ button {
   display: flex;
 
 }
+
