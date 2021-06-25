@@ -100,19 +100,25 @@ socket.on("checkBack", arr => {
     assignDiags(state)
     check()
     let progressDiv = document.getElementById("progress");
-    if (progress == 1) {
-        progressDiv.innerText = "B"
-    } else if (progress == 2) {
-        progressDiv.innerText = "B I"
-    } else if (progress == 3) {
-        progressDiv.innerText = "B I N"
-    } else if (progress == 4) {
-        progressDiv.innerText = "B I N G"
-    } else if (progress >= 5) {
-        progressDiv.innerText = "B I N G O"
+    progressUpdate(progress,["B","I","N","G","O"],progressDiv)
+    if(progress >= 5){
         showBingo()
     }
 })
+
+function progressUpdate(t,arr,el){
+    if(t>5){t=5}
+    if(el.children.length<t){
+        el.innerHTML = ""
+    for(i = 0;i<t;i++){
+        let span = document.createElement("span")
+        let text = document.createTextNode(arr[i]);
+        span.append(text);
+        el.append(span)
+    }
+}
+}
+
 
 socket.on("over", name => {
     document.getElementById("won").classList.remove("hidden");

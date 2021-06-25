@@ -1,8 +1,10 @@
 class player{
     state=[]
-    constructor(name,socket){
+    constructor(name,socket,uid,code){
         this.name=name;
         this.socket=socket;
+        this.code=code;
+        this.uid=uid;
         for(let i=0;i<24;i++){
             this.state.push(0)
         }
@@ -32,6 +34,7 @@ class room{
     players=[]
     occupied=[]
     finished=false;
+    gameStarted=false;
     updatePlayerStatus(uid,status,table){
         let selectedPlayer = findPlayer(uid,this)
         this.players.forEach(p=>{

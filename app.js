@@ -10,7 +10,8 @@ const path = require("path");
 const classes = require("./class.js");
 const room = classes.room;
 const player = classes.player;
-
+const events = require("events")
+const em = new events.EventEmitter()
 app.use("/public", express.static(path.join(__dirname, "client")));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "bingo.html"));
@@ -18,8 +19,57 @@ app.get("/", (req, res) => {
 
 var players = [];
 var rooms = [];
+
+em.on("disconnected",(room)=>{
+    console.log()
+})
+
+// em.on("disconnected",id=>{
+//     console.log(id)
+//     let arr = [] 
+//     let roomIndex;
+//     console.log(rooms)
+//     arr = rooms.forEach((room,index)=>{
+//         players = room.players;
+//         let arr2 = players.map(p=>{
+//             return p.socket.id;
+//         })
+//         arr.concat(arr2)
+//     })
+//     if(belongsTo(id))
+// })
+
 io.on("connection", (socket) => {
     console.log("connected");
+    
+    socket.on("disconnect",()=> {
+        console.log("disconnected");
+        let roomFound = false;
+        let selectedRoom
+        for(let i=0;i<players.length;i++){
+            if(players[i].socket.id==socket.id){
+               selectedRoom=findRoom(players[i].code);
+               selectedRoom.players = removeFromArr(players[i],selectedRoom.players)
+               if(selectedRoom.players.length == 0){
+                   rooms = removeFromArr(selectedRoom,rooms);
+               }
+               roomFound = true;
+               break; 
+            }else{
+                
+            }
+        }
+        if(roomFound){
+            let allPlayers = [];
+            selectedRoom.players.forEach((p) => {
+                allPlayers.push([p.name, p.status]);
+            });
+            //console.log(selectedRoom.turn,allPlayers)
+            selectedRoom.emitAll("updatePlayers", allPlayers);   
+        }
+    })
+
+
 
     socket.on("done", (input, code, uid , status) => {
         let selectedRoom = findRoom(code);
@@ -34,24 +84,26 @@ io.on("connection", (socket) => {
 
 
     socket.on("create", (playerName) => {
-        let currentPlayer = new player(playerName, socket);
+       // let currentPlayer = new player(playerName, socket);
         let rand = 0;
-        rand = Math.floor(Math.random() * 1000000);
-        rand = rand.toString();
-        while (rand.length < 4) {
-            rand += "0";
+        uid = Math.floor(Math.random() * 1000000);
+        uid = uid.toString();
+        while (uid.length < 4) {
+            uid += "0";
         }
-        currentPlayer.uid = rand;
-        rand = 0;
-        rand = Math.floor(Math.random() * 10000);
-        rand = rand.toString();
-        while (rand.length < 4) {
-            rand += "0";
+       // currentPlayer.uid = rand;
+        //rand = 0;
+        let code = Math.floor(Math.random() * 10000);
+        code = code.toString();
+        while (code.length < 4) {
+            code += "0";
         }
-        tempRoom = new room(rand);
+        let currentPlayer = new player(playerName,socket,uid,code)
+        tempRoom = new room(code);
         tempRoom.players.push(currentPlayer)
+        players.push(currentPlayer)
         rooms.push(tempRoom);
-        socket.emit("roomCode", rand, currentPlayer.uid);
+        socket.emit("roomCode", code, currentPlayer.uid);
         tempRoom.players.forEach((p) => {});
     });
 
@@ -61,16 +113,18 @@ io.on("connection", (socket) => {
             return e.code;
         });
         if (belongsTo(code, arr)) {
-            let currentPlayer = new player(playerName, socket);
-            let rand = 0;
-            rand = Math.floor(Math.random() * 1000000);
-            rand = rand.toString();
-            while (rand.length < 4) {
-                rand += "0";
-            }
-            currentPlayer.uid = rand;
-            players.push(currentPlayer);
             let selectedRoom = findRoom(code);
+            //console.log(selectedRoom,rooms)
+            if(!selectedRoom.gameStarted){
+            //let currentPlayer = new player(playerName, socket);
+            let uid = 0;
+            uid = Math.floor(Math.random() * 1000000);
+            uid = uid.toString();
+            while (uid.length < 6) {
+                uid += "0";
+            }
+            let currentPlayer = new player(playerName,socket,uid,code)
+            players.push(currentPlayer);
             selectedRoom.players.push(currentPlayer);
             socket.emit("joined", selectedRoom.code, currentPlayer.uid, (selectedRoom.players.length));
             let allPlayers = [];
@@ -81,10 +135,12 @@ io.on("connection", (socket) => {
             selectedRoom.emitAll("updatePlayers", allPlayers);
 
         }
+    }
     });
 
     socket.on("start", code => {
         let selectedRoom = findRoom(code);
+        selectedRoom.gameStarted = true;
         selectedRoom.emitAll("started", true)
     })
 
@@ -124,11 +180,10 @@ function findRoom(code) {
     for (let i = 0; i < rooms.length; i++) {
         temp = rooms[i];
         if (temp.code == code) {
-            temp = i;
-            break;
+            return rooms[i]
         }
     }
-    return rooms[temp];
+    return false;
 }
 
 function belongsTo(e, arr) {
@@ -138,6 +193,15 @@ function belongsTo(e, arr) {
         }
     }
     return false;
+}
+
+function removeFromArr(e,arr){
+    let index = arr.indexOf(e);
+    for(let i = index;i<arr.length;i++){
+        arr[i]=arr[i+1]
+    }
+    arrr = arr.pop()
+    return arr;
 }
 
 

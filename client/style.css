@@ -207,10 +207,16 @@ button {
 }
 
 .turn{
-  border: 5px solid yellow;
+  border: 3px solid yellow;
   border-radius:0.3em;
 }
+#progress{
+  display: flex;
+}
 
+#progress span{
+  border : 2px solid white;
+}
 #cont line{
   stroke:crimson;
   stroke-width: 5px;
