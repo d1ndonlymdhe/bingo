@@ -45,11 +45,13 @@ io.on("connection", (socket) => {
     socket.on("disconnect",()=> {
         console.log("disconnected");
         let roomFound = false;
+        let index;
         let selectedRoom
         for(let i=0;i<players.length;i++){
             if(players[i].socket.id==socket.id){
                selectedRoom=findRoom(players[i].code);
                selectedRoom.players = removeFromArr(players[i],selectedRoom.players)
+               index = i;
                if(selectedRoom.players.length == 0){
                    rooms = removeFromArr(selectedRoom,rooms);
                }
@@ -64,12 +66,24 @@ io.on("connection", (socket) => {
             selectedRoom.players.forEach((p) => {
                 allPlayers.push([p.name, p.status]);
             });
-            //console.log(selectedRoom.turn,allPlayers)
-            selectedRoom.emitAll("updatePlayers", allPlayers);   
+            if(index+1 == selectedRoom.players.length){
+                selectedRoom.turn == 1;
+            }else{
+                selectedRoom.turn == index + 2;
+            }
+            
+            selectedRoom.emitAll("disconnectUpdate", [allPlayers,selectedRoom.turn]);
+            if(selectedRoom.gameStarted){
+            selectedRoom.emitAll("turnUpdate",selectedRoom.turn)   
+            }
+            console.log(selectedRoom.turn,selectedRoom.players)
         }
     })
 
 
+    socket.on("log",(message)=>{
+        console.log(message)
+    })
 
     socket.on("done", (input, code, uid , status) => {
         let selectedRoom = findRoom(code);

@@ -35,17 +35,46 @@ if(!belongsTo(0,input)){
 socket.on("updatePlayers", (players) => {
     console.log(players);
     allPlayers = players;
-    let allReady = true;
+    
+    let allReady=true;
     let color;
+
     document.getElementById("connectedPlayers").innerHTML = "";
     document.querySelectorAll("#waiting p")[0].classList.add("hidden")
+    showPlayers(players)
+    
+
+    players.forEach(p=>{
+        
+        if (p[1] == "not ready") {
+                allReady = false;
+        }
+    
+    })
+    if (allReady && isHost) {
+        document.getElementById("startButton").classList.remove("hidden")
+    }
+});
+socket.on("disconnectUpdate",(m)=>{
+    players = m[0];
+    t = m[1];
+    if(turn>t){
+        turn -= 1;
+    }
+    document.getElementById("connectedPlayers").innerHTML="";
+    showPlayers(players)
+})
+function showPlayers(players){
     players.forEach((p) => {
+
+
+        let color
         let div = document.createElement("div");
         div.classList.add("playerName")
         let text = document.createTextNode(`${p[0]}`);
         let para = document.createElement("p");
         para.appendChild(text);
-        console.log(color)
+        //console.log(color)
         if(p[1]=="ready"){
           color="green"
         }else{
@@ -57,17 +86,9 @@ socket.on("updatePlayers", (players) => {
         document.getElementById("connectedPlayers").style.fontSize="clamp(0px,5vh,100%)"
         document.getElementById("connectedPlayers").classList.remove("hidden");
 
+})
+}
 
-
-        if (p[1] == "not ready") {
-            allReady = false;
-        }
-
-    });
-    if (allReady && isHost) {
-        document.getElementById("startButton").classList.remove("hidden")
-    }
-});
 
 document.getElementById("join").addEventListener("click", () => {
     isHost = false;
@@ -107,7 +128,7 @@ socket.on("started", (m) => {
 
 socket.on("turnUpdate",(turn)=>{
     let playerNames= document.getElementsByClassName("playerName")
-    console.table(prev,turn,playerNames[prev].children[0],playerNames[turn-1].children[0],playerNames)
+    console.log(prev,turn,playerNames[prev].children[0],playerNames[turn-1].children[0],playerNames)
     playerNames[prev].children[0].classList.remove("turn")
     playerNames[turn-1].children[0].classList.add("turn")   
     prev = turn-1
