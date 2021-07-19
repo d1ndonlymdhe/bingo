@@ -129,25 +129,6 @@
 
             </div>
         </div>
-        <script>
-            let blinkEl = document.querySelectorAll(".blink")[0];
-            let x=100;
-            let blinker=setInterval((blinkEL,x)=>{
-                do{
-                    setTimeout((blinkEL,x)=>{
-                        blinkEl.style.opacity=`${x}%`;
-                        x--;
-                    },20)
-                }while(x!=0)
-                    do{
-                    setTimeout((blinkEL,x)=>{
-                        blinkEl.style.opacity=`${x}%`;
-                        x++;
-                    },20)
-                }while(x==100)
-
-            },2000)
-        </script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>  -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="public/connect.js" defer></script>
