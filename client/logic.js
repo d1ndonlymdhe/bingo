@@ -1,16 +1,16 @@
-var current = 1;
-var replaceFrom = ""; 
-var clickers = document.querySelectorAll("#clickers div"); 
-var input = [] 
-var state = [] 
-var arr = []
-var cols = []
-var diag = []
-var progress = 0;
-var doneR = [];
-var doneC = [];
-var doneD = [];
-var gameFinished = false;
+let replaceFrom = ""; 
+let current = 1;
+let clickers = document.querySelectorAll("#clickers div"); 
+let input = [] 
+let state = [] 
+let arr = []
+let cols = []
+let diag = []
+let progress = 0;
+let doneR = [];
+let doneC = [];
+let doneD = [];
+let gameFinished = false;
 for (let i = 0; i < 25; i++) {
     state.push(0)
 }
@@ -121,8 +121,15 @@ function progressUpdate(t,arr,el){
 
 
 socket.on("over", name => {
-    document.getElementById("won").classList.remove("hidden");
-    document.getElementById("won").innerText = name;
+    document.getElementById("won").classList.remove("hidden")
+    let won = document.getElementById("won").children[0];
+    document.getElementById("container").style.filter="blur(50px)"
+    let text = document.createTextNode(`${name} has won the game`)
+    won.appendChild(text);
+    let buttons = won.childNodes[1];
+    let names = won.childNodes[0];
+    won.replaceChild(buttons,names);
+    won.appendChild(buttons)
     document.getElementById("bingo").classList.add("hidden")
     gameFinished = true;
 })
@@ -139,9 +146,7 @@ random.addEventListener('click', e => {
     showDone()
 })
 
-document.getElementById("bingo").addEventListener("click", () => {
-    socket.emit("bingo", turn, roomCode)
-})
+
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -261,5 +266,8 @@ function belongsTo(e, arr) {
 
 
 function showBingo() {
-    document.getElementById("bingo").classList.remove("hidden")
+    document.getElementById("progress").addEventListener("click", () => {
+        socket.emit("bingo", turn, roomCode)
+    })
+    document.getElementById("progress").classList.add("Complete")
 }

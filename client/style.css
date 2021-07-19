@@ -4,6 +4,15 @@
   }
 }
 
+@keyframes blink{
+  from{
+    opacity:100%
+  }
+  to{
+    opacity:0%;
+  }
+}
+
 
 body {
   display: flex;
@@ -71,7 +80,7 @@ button {
   background-color: yellow;
   height: 7vh;
   width: 75%;
-  font-size: 5.5vh;
+  font-size: clamp(0px,5.5vh,30px);
   border-radius: 0.25em;
   color: black;
 }
@@ -300,4 +309,20 @@ button {
 
 #won button{
   margin:5px;
+}
+
+#codeCOntainer{
+  border: yellow 2px solid;
+  padding-right: 5vw;
+  padding-left: 5vw;
+}
+
+.blink{
+  /* animation: blink 2s ease-in-out; */
+}
+
+#bottom{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

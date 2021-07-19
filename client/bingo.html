@@ -37,13 +37,27 @@
                 </div>
                 <div id="progress"></div>
                 </div>
-                <div id="container1">
+                <div id="bottom">
+                    <div id="codeContainer">0000</div>
                     <div id="waiting">
-                        <p>waiting for players</p>
+                        <p class = "blink">waiting for players</p>
                         <div id="connectedPlayers" class="hidden"></div>
                     </div>
-                    <div id="codeContainer">0000</div>
-                    <div id="won"></div>
+                    <!-- <div id="won"></div> -->
+                </div>
+            </div>
+            <div id = "won" class="hidden">
+                <div>
+                    Hello THere
+                    <div>
+
+                    <button>
+                        Restart
+                    </button>
+                    <button>
+                        Exit
+                    </button>
+                    </div>
                 </div>
             </div>
             <div id="container">
@@ -114,7 +128,25 @@
 
             </div>
         </div>
-        <!-- <script src="socket.io/socket.io.js"></script> -->
+        <script>
+            let blinkEl = document.querySelectorAll(".blink")[0];
+            let x=100;
+            let blinker=setInterval((blinkEL,x)=>{
+                do{
+                    setTimeout((blinkEL,x)=>{
+                        blinkEl.style.opacity=`${x}%`;
+                        x--;
+                    },20)
+                }while(x!=0)
+                    do{
+                    setTimeout((blinkEL,x)=>{
+                        blinkEl.style.opacity=`${x}%`;
+                        x++;
+                    },20)
+                }while(x==100)
+
+            },2000)
+        </script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" crossorigin="anonymous"></script>  -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="public/connect.js" defer></script>
